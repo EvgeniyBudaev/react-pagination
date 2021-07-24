@@ -1,4 +1,8 @@
-React Pagination
+# React Pagination
 
+In the project directory, you can run:
 
-Live: https://olegsuncrown.github.io/react-pagination/
+### `npm start`
+
+![Image alt](https://github.com/EvgeniyBudaev/react-pagination/blob/main/readme.jpg)
+
