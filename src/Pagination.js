@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function Pagination({ pages = 10, setCurrentPage }) {
+function Pagination({ pages = 10, setCurrentPage, onChange, onGoBack, onGoForward }) {
 
   //Set number of pages
   const numberOfPages = []
@@ -63,15 +63,31 @@ function Pagination({ pages = 10, setCurrentPage }) {
 
     setArrOfCurrButtons(tempNumberOfPages)
     setCurrentPage(currentButton)
-  }, [currentButton])
+    onChange(currentButton)
+    onGoBack(currentButton)
+    onGoForward(currentButton)
+  }, [currentButton, setCurrentPage, setCurrentButton, onChange, onGoBack, onGoForward])
 
+  const handlePageChange = (item) => {
+    if (item !== currentButton) {
+      setCurrentButton(item)
+    }
+  }
+
+  const handlePageGoBack = () => {
+    setCurrentButton(prev => prev <= 1 ? prev : prev - 1)
+  }
+
+  const handlePageGoForward = () => {
+    setCurrentButton(prev => prev >= numberOfPages.length ? prev : prev + 1)
+  }
 
   return (
     <div className="pagination-container">
       <a
         href="#"
         className={`${currentButton === 1 ? 'disabled' : ''}`}
-        onClick={() => setCurrentButton(prev => prev <= 1 ? prev : prev - 1)}
+        onClick={handlePageGoBack}
       >
         Prev
       </a>
@@ -81,7 +97,7 @@ function Pagination({ pages = 10, setCurrentPage }) {
           href="#"
           key={index}
           className={`${currentButton === item ? 'active' : ''}`}
-          onClick={() => setCurrentButton(item)}
+          onClick={() => handlePageChange(item)}
         >
           {item}
         </a>
@@ -90,7 +106,7 @@ function Pagination({ pages = 10, setCurrentPage }) {
       <a
         href="#"
         className={`${currentButton === numberOfPages.length ? 'disabled' : ''}`}
-        onClick={() => setCurrentButton(prev => prev >= numberOfPages.length ? prev : prev + 1)}
+        onClick={handlePageGoForward}
       >
         Next
       </a>
