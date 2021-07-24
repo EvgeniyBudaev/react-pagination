@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { Posts } from "src/components";
-import { Pagination } from "src/ui-kit";
+import { Posts } from "components";
+import { Icon, Pagination } from "ui-kit";
 
 const App: React.FC = () => {
   const [posts, setPosts] = useState([]);
@@ -53,6 +53,7 @@ const App: React.FC = () => {
   return (
     <div className="container mt-5">
       <h1 className="text-primary mb-3">My Blog</h1>
+      <Icon type={"ArrowLeft"} />
       <Posts posts={currentPosts} />
       <Pagination
         pages={howManyPages}

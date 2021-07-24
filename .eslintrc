@@ -69,7 +69,7 @@
     "settings": {
     "import/resolver": {
       "node": {
-        "paths": ["frontend"]
+        "paths": ["src"]
       }
     }
   }
