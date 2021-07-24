@@ -1,6 +1,9 @@
 import React, { useState, useEffect, Dispatch } from "react";
+import classNames from "classnames";
+import { IconButton } from "ui-kit";
+import styles from "./Pagination.module.scss";
 
-interface IPaginationProps {
+export interface IPaginationProps {
   pages: number;
   setCurrentPage: Dispatch<React.SetStateAction<number>>;
   onChange: (number) => void;
@@ -8,7 +11,7 @@ interface IPaginationProps {
   onGoForward: (number) => void;
 }
 
-const Pagination: React.FC<IPaginationProps> = ({
+export const Pagination: React.FC<IPaginationProps> = ({
   pages = 10,
   setCurrentPage,
   onChange,
@@ -17,6 +20,9 @@ const Pagination: React.FC<IPaginationProps> = ({
 }) => {
   //Set number of pages
   const numberOfPages = [];
+  const FIRST_PAGE_NUMBER = 1;
+  const firstPage = FIRST_PAGE_NUMBER;
+
   for (let i = 1; i <= pages; i++) {
     numberOfPages.push(i);
   }
@@ -106,39 +112,39 @@ const Pagination: React.FC<IPaginationProps> = ({
   };
 
   return (
-    <div className="pagination-container">
-      <a
-        href="#"
-        className={`${currentButton === 1 ? "disabled" : ""}`}
+    <div className={styles.Pagination}>
+      <IconButton
+        className={classNames(styles.PaginationArrowButton, {
+          [styles.PaginationArrowButton__disabled]: currentButton === firstPage,
+        })}
+        type="ArrowLeft"
+        disabled={currentButton === firstPage}
         onClick={handlePageGoBack}
-      >
-        Prev
-      </a>
+      />
 
       {arrOfCurrButtons.map((item, index) => {
         return (
-          <a
-            href="#"
+          <div
             key={index}
-            className={`${currentButton === item ? "active" : ""}`}
+            className={classNames(styles.PaginationCurrentButton, {
+              [styles.PaginationCurrentButton__active]: currentButton === item,
+            })}
             onClick={() => handlePageChange(item)}
           >
             {handleItemNumberOrDots(item)}
-          </a>
+          </div>
         );
       })}
 
-      <a
-        href="#"
-        className={`${
-          currentButton === numberOfPages.length ? "disabled" : ""
-        }`}
+      <IconButton
+        className={classNames(styles.PaginationArrowButton, {
+          [styles.PaginationArrowButton__disabled]:
+            currentButton === numberOfPages.length,
+        })}
+        type="ArrowRight"
+        disabled={currentButton === numberOfPages.length}
         onClick={handlePageGoForward}
-      >
-        Next
-      </a>
+      />
     </div>
   );
 };
-
-export { Pagination };
