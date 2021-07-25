@@ -35,32 +35,16 @@ const App: React.FC = () => {
 
   const handlePageChange = currentButton => {
     setCurrentPage(currentButton);
-    history.push(`${path}?page=${currentButton}`);
-  };
-
-  const handlePageGoBack = currentButton => {
-    setCurrentPage(prev => prev - 1);
     history.push(
-      `${path} ${currentButton === 1 ? "" : `?page=${currentButton}`}`
+      currentButton !== 1 ? `${path}?page=${currentButton}` : `${path}`
     );
-  };
-
-  const handlePageGoForward = currentButton => {
-    setCurrentPage(prev => prev + 1);
-    history.push(`${path}?page=${currentButton}`);
   };
 
   return (
     <div className="container mt-5">
       <h1 className="text-primary mb-3">My Blog</h1>
       <Posts posts={currentPosts} />
-      <Pagination
-        pages={howManyPages}
-        setCurrentPage={setCurrentPage}
-        onChange={handlePageChange}
-        onGoBack={handlePageGoBack}
-        onGoForward={handlePageGoForward}
-      />
+      <Pagination pages={howManyPages} onChange={handlePageChange} />
     </div>
   );
 };

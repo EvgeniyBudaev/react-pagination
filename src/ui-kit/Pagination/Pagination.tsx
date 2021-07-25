@@ -1,27 +1,20 @@
-import React, { useState, useEffect, Dispatch } from "react";
+import React, { useState, useEffect } from "react";
 import classNames from "classnames";
 import { IconButton } from "ui-kit";
 import styles from "./Pagination.module.scss";
 
 export interface IPaginationProps {
   pages: number;
-  setCurrentPage: Dispatch<React.SetStateAction<number>>;
   onChange: (number) => void;
-  onGoBack: (number) => void;
-  onGoForward: (number) => void;
 }
 
 export const Pagination: React.FC<IPaginationProps> = ({
   pages = 10,
-  setCurrentPage,
   onChange,
-  onGoBack,
-  onGoForward,
 }) => {
+  const FIRST_PAGE = 1;
   //Set number of pages
   const numberOfPages = [];
-  const FIRST_PAGE_NUMBER = 1;
-  const firstPage = FIRST_PAGE_NUMBER;
 
   for (let i = 1; i <= pages; i++) {
     numberOfPages.push(i);
@@ -72,18 +65,15 @@ export const Pagination: React.FC<IPaginationProps> = ({
     }
 
     setArrOfCurrButtons(tempNumberOfPages);
-    setCurrentPage(currentButton);
-    onChange(currentButton);
-    onGoBack(currentButton);
-    onGoForward(currentButton);
   }, [
     currentButton,
-    setCurrentPage,
     setCurrentButton,
-    onChange,
-    onGoBack,
-    onGoForward,
+    pages,
   ]);
+
+  useEffect(() => {
+    onChange(currentButton);
+  }, [currentButton]);
 
   const handlePageChange = item => {
     if (item !== currentButton) {
@@ -96,7 +86,7 @@ export const Pagination: React.FC<IPaginationProps> = ({
   };
 
   const handlePageGoForward = () => {
-    setCurrentButton(prev => (prev >= numberOfPages.length ? prev : prev + 1));
+    setCurrentButton(prev => (prev >= pages ? prev : prev + 1));
   };
 
   const handleItemNumberOrDots = (item: number) => {
@@ -115,10 +105,10 @@ export const Pagination: React.FC<IPaginationProps> = ({
     <div className={styles.Pagination}>
       <IconButton
         className={classNames(styles.PaginationArrowButton, {
-          [styles.PaginationArrowButton__disabled]: currentButton === firstPage,
+          [styles.PaginationArrowButton__disabled]: currentButton === FIRST_PAGE,
         })}
         type="ArrowLeft"
-        disabled={currentButton === firstPage}
+        disabled={currentButton === FIRST_PAGE}
         onClick={handlePageGoBack}
       />
 
@@ -138,11 +128,10 @@ export const Pagination: React.FC<IPaginationProps> = ({
 
       <IconButton
         className={classNames(styles.PaginationArrowButton, {
-          [styles.PaginationArrowButton__disabled]:
-            currentButton === numberOfPages.length,
+          [styles.PaginationArrowButton__disabled]: currentButton === pages,
         })}
         type="ArrowRight"
-        disabled={currentButton === numberOfPages.length}
+        disabled={currentButton === pages}
         onClick={handlePageGoForward}
       />
     </div>
